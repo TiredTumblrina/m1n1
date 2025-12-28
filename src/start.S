@@ -11,6 +11,7 @@
 .extern _v_sp0_irq
 .extern _v_sp0_fiq
 .extern _v_sp0_serr
+.extern _v_sp0_badinstr
 .extern _reset_stack
 .extern _cpu_reset_c
 .extern wdt_reboot
@@ -27,8 +28,7 @@ _vectors_start:
     mov x9, '1'
     b exc_unk
     .align 7
-    mov x9, '2'
-    b exc_unk
+    b _v_sp0_badinstr
     .align 7
     mov x9, '3'
     b exc_unk

@@ -15,6 +15,11 @@
 u8 el0_stack[EL0_STACK_SIZE] ALIGNED(64);
 void *el0_stack_base = (void *)(u64)(&el0_stack[EL0_STACK_SIZE]);
 
+#ifdef GXFVM
+#define GENTER 0x00201420
+extern void gxf_vm_genter(u64 target);
+#endif // GXFVM
+
 extern char _vectors_start[0];
 extern char _el1_vectors_start[0];
 
@@ -241,6 +246,23 @@ void print_regs(u64 *regs, int el12)
         if (cpu_features->fast_ipi)
             printf("MMU_ERR_STS: 0x%lx\n", mrs(SYS_IMP_APL_MMU_ERR_STS));
     }
+}
+
+void exc_badinstr(u64 *regs) {
+#ifdef GXFVM
+    u64 elr = in_gl12() ? mrs(SYS_IMP_APL_ELR_GL1) : (in_el3() ? mrs(ELR_EL3) : mrs(ELR_EL1));
+    u64 instr = *((u64 *)elr - 8);
+
+    if (instr == GENTER) {
+        gxf_vm_genter(regs[16]);
+        return;
+    }
+#else
+    (void) regs;
+#endif // GXFVM
+
+    __asm__("mov x9, '2'\n\t"
+            "b exc_unk");
 }
 
 void exc_sync(u64 *regs)

@@ -17,3 +17,4 @@ versions = { path = "./versions" }
 
 [features]
 chainload = ["dep:fatfs", "dep:uuid"]
+gxf-vm = []

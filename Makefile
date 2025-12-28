@@ -71,6 +71,8 @@ ifeq ($(RELEASE),1)
 CFG += RELEASE
 endif
 
+GXFVM ?= 0
+
 # Required for no_std + alloc for now
 export RUSTC_BOOTSTRAP=1
 RUST_LIB := librust.a
@@ -83,6 +85,11 @@ endif
 ifeq ($(CHAINLOADING),1)
 CFG += CHAINLOADING
 CARGO_FLAGS += --features chainload
+endif
+
+ifeq ($(GXFVM), 1)
+CARGO_FLAGS += --features gxf-vm
+CFLAGS += -DGXFVM
 endif
 
 LDFLAGS := -EL -maarch64elf --no-undefined -X -Bsymbolic \

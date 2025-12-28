@@ -13,6 +13,7 @@ pub mod adt;
 pub mod chainload;
 pub mod dlmalloc;
 pub mod gpt;
+pub mod gxf_vm;
 pub mod nvme;
 pub mod print;
 

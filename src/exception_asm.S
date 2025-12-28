@@ -7,8 +7,20 @@
 .globl exc_irq
 .globl exc_fiq
 .globl exc_serr
+.globl exc_badinstr
 .globl _vectors_start
 .globl el0_stack
+
+.globl _v_sp0_badinstr
+.type _v_sp0_badinstr, @function
+_v_sp0_badinstr:
+    msr pan, #0
+    sub sp, sp, #(SIZEOF_EXC_INFO - 32 * 8)
+    str x30, [sp, #-16]!
+    bl _exc_entry
+    bl exc_badinstr
+
+    b _exc_return
 
 .globl _v_sp0_sync
 .type _v_sp0_sync, @function

@@ -16,6 +16,7 @@ pub mod dlmalloc;
 pub mod float;
 pub mod gpt;
 pub mod gpu;
+pub mod gxf_vm;
 pub mod nvme;
 pub mod print;
 

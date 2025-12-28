@@ -9,6 +9,9 @@ publish = false
 [lib]
 crate-type = [ "staticlib" ]
 
+[features]
+gxf-vm = []
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 fatfs = { path = "vendor/rust-fatfs", default-features = false, features = ["lfn", "alloc"] }
